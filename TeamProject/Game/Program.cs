@@ -21,14 +21,15 @@ namespace Movement
 
         static bool Playing = true;  // If false => Game Over.
         static ConsoleKeyInfo keyInfo; // Saves a keypress from the console.
-        static int Delay = 100; // Delay for frame.
+        static int Delay = 10; // Delay for frame.
         static int rows = 25; //Rowl of the field.
         static int cols = 100; //Colomns of the field.
         static char[,] field = new char[rows, cols]; //Matrix for the field.
         static int ship = cols / 2; //Remembers on witch colomn is the top of the ship.
-        static int lives = 999; // Lives of your ship.
-        static int LineEnemyShips = 4; // Lines of enemy ships.
+        static int lives = 10; // Lives of your ship.
+        static int LineEnemyShips = 1; // Lines of enemy ships.
         static int EnemyLives = 4; // Lives of enemy ships.
+        static int ShipReset = 0;
 
         static int points = 0; //Points at the end of the game.
         // Structure that holds a cordinates of the shots.
@@ -141,6 +142,7 @@ namespace Movement
         {
             while (Playing)
             {
+                DateTime check2 = DateTime.Now;
                 DateTime check = DateTime.Now.AddMilliseconds(Delay);
                 while (check > DateTime.Now)
                 {
@@ -168,6 +170,13 @@ namespace Movement
                         }
                     }
                 }
+                for (int i = 0; i < EnemyShips.Length; i++)
+                {
+                    if (EnemyShips[i].lives == 0)
+                        ShipReset++;
+                }
+                if (ShipReset == EnemyShips.Length)
+                    EnemyParameters();
                 ResetField();
                 Ship();
                 Borders();
@@ -180,6 +189,9 @@ namespace Movement
                 Print();
                 if (lives <= 0)
                     Playing = false;
+                ShipReset = 0;
+                Console.WriteLine(DateTime.Now - check2);
+                Thread.Sleep(500);
             }
         }
 
@@ -206,7 +218,7 @@ namespace Movement
                 else
                 {
                     EnemyShipShoting -= (cols - 2) / 4;
-                    if (EnemyShotPositionRecord <= 0)
+                    if (EnemyShotPositionRecord <= 0 || EnemyShipShoting < 0)
                     {
                         DeadRows.Add(EnemyShotPositionRecord + (LineEnemyShips - 1));
                         goto NoShipsAlive;
