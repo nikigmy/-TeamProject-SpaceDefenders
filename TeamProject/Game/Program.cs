@@ -142,7 +142,6 @@ namespace Movement
         {
             while (Playing)
             {
-                DateTime check2 = DateTime.Now;
                 DateTime check = DateTime.Now.AddMilliseconds(Delay);
                 while (check > DateTime.Now)
                 {
@@ -190,8 +189,6 @@ namespace Movement
                 if (lives <= 0)
                     Playing = false;
                 ShipReset = 0;
-                Console.WriteLine(DateTime.Now - check2);
-                Thread.Sleep(500);
             }
         }
 
