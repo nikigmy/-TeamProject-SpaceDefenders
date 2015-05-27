@@ -1,5 +1,5 @@
 D:\Visual Studio projects\SpaceDefenders\Menu\bin\Debug\Menu.exe
 D:\Visual Studio projects\SpaceDefenders\Menu\bin\Debug\Menu.pdb
-D:\Visual Studio projects\SpaceDefenders\Menu\obj\Debug\Menu.csprojResolveAssemblyReference.cache
 D:\Visual Studio projects\SpaceDefenders\Menu\obj\Debug\Menu.exe
 D:\Visual Studio projects\SpaceDefenders\Menu\obj\Debug\Menu.pdb
+D:\Visual Studio projects\SpaceDefenders\Menu\obj\Debug\SpaceDefenders.csprojResolveAssemblyReference.cache
