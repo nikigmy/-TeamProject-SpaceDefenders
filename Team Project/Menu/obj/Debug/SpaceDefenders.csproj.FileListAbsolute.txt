@@ -3,3 +3,8 @@ D:\Visual Studio projects\SpaceDefenders\Menu\bin\Debug\Menu.pdb
 D:\Visual Studio projects\SpaceDefenders\Menu\obj\Debug\Menu.exe
 D:\Visual Studio projects\SpaceDefenders\Menu\obj\Debug\Menu.pdb
 D:\Visual Studio projects\SpaceDefenders\Menu\obj\Debug\SpaceDefenders.csprojResolveAssemblyReference.cache
+C:\Users\Dell\Desktop\Teamwork\-TeamProject-SpaceDefenders\Team Project\Menu\obj\Debug\Menu.exe
+C:\Users\Dell\Desktop\Teamwork\-TeamProject-SpaceDefenders\Team Project\Menu\obj\Debug\Menu.pdb
+C:\Users\Dell\Desktop\Teamwork\-TeamProject-SpaceDefenders\Team Project\Menu\bin\Debug\Menu.exe
+C:\Users\Dell\Desktop\Teamwork\-TeamProject-SpaceDefenders\Team Project\Menu\bin\Debug\Menu.pdb
+C:\Users\Dell\Desktop\Teamwork\-TeamProject-SpaceDefenders\Team Project\Menu\obj\Debug\SpaceDefenders.csprojResolveAssemblyReference.cache
