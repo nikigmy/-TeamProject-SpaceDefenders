@@ -48,6 +48,12 @@ public class Introduction
 
     public static void GameIntroduction()
     {
+        Console.SetWindowSize(GameMenu.FieldCols + 2, GameMenu.FieldRows + 3); // Set console width and height
+        Console.SetBufferSize(GameMenu.FieldCols + 2, GameMenu.FieldRows + 3); // Setbuffer size
+        Console.BackgroundColor = ConsoleColor.White;
+        Console.ForegroundColor = ConsoleColor.Black;
+        Console.Clear();
+        Console.CursorVisible = false;
         System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"typewriter.wav");
         player.Load();
         player.PlayLooping();

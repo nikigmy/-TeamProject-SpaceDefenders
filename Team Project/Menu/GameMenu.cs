@@ -11,8 +11,8 @@ using GameSounds;
 
 public class GameMenu
 {
-    private const int FieldRows = 25;
-    private const int FieldCols = 100;
+    public const int FieldRows = 25;
+    public const int FieldCols = 100;
     private const char arrowChar = '>';
 
     private static int musicPower = 10;

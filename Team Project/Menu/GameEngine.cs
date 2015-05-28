@@ -13,6 +13,8 @@ public class GameEngine
     public static char ShipChar = 'X';
     public static char YourShotChar = '*';
     public static char EnemyShotChar = '$';
+    public static char BossChar = '\u25A0';
+    public static char BossShotChar = '+';
     public static char EnemyChar = '%';
     public static char BorderChar = '#';
     public static char BonusChar = '@';
@@ -22,6 +24,7 @@ public class GameEngine
     public static int BonusDelay = 0;
     // Progress in the game.
     public static int Level = 1;
+    public static string BossDirecion = "Left";
     public static bool MoveLeft = true;
     public static bool MoveRight = true;
     public static bool Shoot = true;
@@ -53,7 +56,7 @@ public class GameEngine
     public static int YourShotDmg = 1;
     // Demage of enemy shots.
     public static int EnemyShotDmg = 1;
-    public static int ShipReset = 0;
+    public static bool ShipReset = true;
     //Points at the end of the game.
     public static int Points = 0;
     public static Bonus BonusCords;
@@ -80,7 +83,7 @@ public class GameEngine
     public static Random EnemyShotPosition = new Random();
 
     // Structure for a enemy ship.
-    public struct EnemyShipLevelOne_Two_Three
+    public struct EnemyShipLevelOne_Two_Three_Boss
     {
         public int row;
         public int col;
@@ -88,11 +91,12 @@ public class GameEngine
     }
 
     // Array of structures that holds the cordinates of enemy ships level one.
-    public static EnemyShipLevelOne_Two_Three[] EnemyShipsLevelOne = new EnemyShipLevelOne_Two_Three[(cols - 2) / 4 * LineEnemyShips];
+    public static EnemyShipLevelOne_Two_Three_Boss[] EnemyShipsLevelOne = new EnemyShipLevelOne_Two_Three_Boss[(cols - 2) / 4 * LineEnemyShips];
     // Array of structures that holds the cordinates of enemy ships level two.
-    public static EnemyShipLevelOne_Two_Three[] EnemyShipsLevelTwo = new EnemyShipLevelOne_Two_Three[(cols - 2) / 6 * LineEnemyShips];
+    public static EnemyShipLevelOne_Two_Three_Boss[] EnemyShipsLevelTwo = new EnemyShipLevelOne_Two_Three_Boss[(cols - 2) / 6 * LineEnemyShips];
     // Array of structures that holds the cordinates of enemy ships level two.
-    public static EnemyShipLevelOne_Two_Three[] EnemyShipsLevelThree = new EnemyShipLevelOne_Two_Three[(cols - 2) / 8 * LineEnemyShips];
+    public static EnemyShipLevelOne_Two_Three_Boss[] EnemyShipsLevelThree = new EnemyShipLevelOne_Two_Three_Boss[(cols - 2) / 8 * LineEnemyShips];
+    public static EnemyShipLevelOne_Two_Three_Boss Boss;
 
     private static Sounds sounds = new Sounds();
 
@@ -195,7 +199,7 @@ public class GameEngine
             }
             for (int i = 0; i < BossLevelLogo.Count; i++)
             {
-                Console.SetCursorPosition(22, i + 8);
+                Console.SetCursorPosition(32, i + 8);
                 Console.Write(BossLevelLogo[i]);
             }
             Thread.Sleep(3000);
@@ -217,6 +221,7 @@ public class GameEngine
                         EnemyShipsLevelOne[i].Health -= YourShotDmg;
                     if (EnemyShipsLevelOne[i].Health > 0)
                         field[EnemyShipsLevelOne[i].row, EnemyShipsLevelOne[i].col] = EnemyChar;
+                    else sounds.PlayExplosionSound();
                     for (int j = EnemyShipsLevelOne[i].col - 1; j < EnemyShipsLevelOne[i].col + 2; j++)
                     {
                         record.row = EnemyShipsLevelOne[i].row - 1;
@@ -224,13 +229,8 @@ public class GameEngine
                         if (AcurateShots.Contains(record))
                             EnemyShipsLevelOne[i].Health -= YourShotDmg;
                         if (EnemyShipsLevelOne[i].Health > 0)
-                        {
                             field[EnemyShipsLevelOne[i].row - 1, j] = EnemyChar;
-                        }
-                        else
-                        {
-                            sounds.PlayExplosionSound();
-                        }
+                        else sounds.PlayExplosionSound();
                     }
                 }
             }
@@ -248,6 +248,7 @@ public class GameEngine
                         EnemyShipsLevelTwo[i].Health -= YourShotDmg;
                     if (EnemyShipsLevelTwo[i].Health > 0)
                         field[EnemyShipsLevelTwo[i].row, EnemyShipsLevelTwo[i].col] = EnemyChar;
+                    else sounds.PlayExplosionSound();
                     for (int j = EnemyShipsLevelTwo[i].col - 1; j < EnemyShipsLevelTwo[i].col + 2; j++)
                     {
                         record.row = EnemyShipsLevelTwo[i].row - 1;
@@ -256,6 +257,7 @@ public class GameEngine
                             EnemyShipsLevelTwo[i].Health -= YourShotDmg;
                         if (EnemyShipsLevelTwo[i].Health > 0)
                             field[record.row, record.col] = EnemyChar;
+                        else sounds.PlayExplosionSound();
                     }
                     for (int j = EnemyShipsLevelTwo[i].col - 2; j < EnemyShipsLevelTwo[i].col + 3; j++)
                     {
@@ -265,6 +267,7 @@ public class GameEngine
                             EnemyShipsLevelTwo[i].Health -= YourShotDmg;
                         if (EnemyShipsLevelTwo[i].Health > 0)
                             field[record.row, record.col] = EnemyChar;
+                        else sounds.PlayExplosionSound();
                     }
                 }
             }
@@ -282,6 +285,7 @@ public class GameEngine
                         EnemyShipsLevelThree[i].Health -= YourShotDmg;
                     if (EnemyShipsLevelThree[i].Health > 0)
                         field[EnemyShipsLevelThree[i].row, EnemyShipsLevelThree[i].col] = EnemyChar;
+                    else sounds.PlayExplosionSound();
                     for (int j = EnemyShipsLevelThree[i].col - 1; j < EnemyShipsLevelThree[i].col + 2; j++)
                     {
                         record.row = EnemyShipsLevelThree[i].row - 1;
@@ -290,6 +294,7 @@ public class GameEngine
                             EnemyShipsLevelThree[i].Health -= YourShotDmg;
                         if (EnemyShipsLevelThree[i].Health > 0)
                             field[record.row, record.col] = EnemyChar;
+                        else sounds.PlayExplosionSound();
                     }
                     for (int j = EnemyShipsLevelThree[i].col - 2; j < EnemyShipsLevelThree[i].col + 3; j++)
                     {
@@ -299,6 +304,7 @@ public class GameEngine
                             EnemyShipsLevelThree[i].Health -= YourShotDmg;
                         if (EnemyShipsLevelThree[i].Health > 0)
                             field[record.row, record.col] = EnemyChar;
+                        else sounds.PlayExplosionSound();
                     }
                     for (int j = EnemyShipsLevelThree[i].col - 3; j < EnemyShipsLevelThree[i].col + 4; j++)
                     {
@@ -308,10 +314,60 @@ public class GameEngine
                             EnemyShipsLevelThree[i].Health -= YourShotDmg;
                         if (EnemyShipsLevelThree[i].Health > 0)
                             field[record.row, record.col] = EnemyChar;
+                        else sounds.PlayExplosionSound();
                     }
                 }
             }
             AcurateShots.Clear();
+        }
+        else if (Level == 4)
+        {
+            if (Boss.Health > 0)
+            {
+                //1
+                field[Boss.row, Boss.col - 1] = BossChar;
+                field[Boss.row, Boss.col - 2] = BossChar;
+                field[Boss.row, Boss.col + 1] = BossChar;
+                field[Boss.row, Boss.col + 2] = BossChar;
+                //2
+                field[Boss.row - 1, Boss.col - 3] = BossChar;
+                field[Boss.row - 1, Boss.col - 5] = BossChar;
+                field[Boss.row - 1, Boss.col + 3] = BossChar;
+                field[Boss.row - 1, Boss.col + 5] = BossChar;
+                //3
+                field[Boss.row - 2, Boss.col] = BossChar;
+                field[Boss.row - 2, Boss.col - 1] = BossChar;
+                field[Boss.row - 2, Boss.col + 1] = BossChar;
+                field[Boss.row - 2, Boss.col - 3] = BossChar;
+                field[Boss.row - 2, Boss.col + 3] = BossChar;
+                field[Boss.row - 2, Boss.col - 5] = BossChar;
+                field[Boss.row - 2, Boss.col + 5] = BossChar;
+                //4
+                for (int i = Boss.col - 5; i < Boss.col + 6; i++)
+                {
+                    field[Boss.row - 3, i] = BossChar;
+                }
+                //5
+                field[Boss.row - 4, Boss.col] = BossChar;
+                field[Boss.row - 4, Boss.col - 1] = BossChar;
+                field[Boss.row - 4, Boss.col + 1] = BossChar;
+                field[Boss.row - 4, Boss.col - 3] = BossChar;
+                field[Boss.row - 4, Boss.col + 3] = BossChar;
+                field[Boss.row - 4, Boss.col - 4] = BossChar;
+                field[Boss.row - 4, Boss.col + 4] = BossChar;
+                field[Boss.row - 4, Boss.col] = BossChar;
+                //6
+                for (int i = Boss.col - 3; i < Boss.col + 4; i++)
+                {
+                    field[Boss.row - 5, i] = BossChar;
+                }
+                //7
+                field[Boss.row - 6, Boss.col + 2] = BossChar;
+                field[Boss.row - 6, Boss.col - 2] = BossChar;
+                //8
+                field[Boss.row - 7, Boss.col - 3] = BossChar;
+                field[Boss.row - 7, Boss.col + 3] = BossChar;
+            }
         }
     }
 
@@ -403,20 +459,18 @@ public class GameEngine
         Console.Clear();
         Console.WriteLine("XxX Game Over XxX ");
         Console.WriteLine("Your points are {0}", Points);
-        if (Points < 0)
-            Console.WriteLine("Very Noob");
-        else if (Points >= 0 && Points < 200)
-            Console.WriteLine("You Suck");
-        else if (Points >= 200 && Points < 500)
-            Console.WriteLine("Good");
-        else if (Points >= 500)
-            Console.WriteLine("WOW");
-        Console.WriteLine(Console.LargestWindowHeight);
+        if (Level == 4 && Boss.Health < 0)
+            Console.WriteLine("Good job, you beated the game!!!");
+        else Console.WriteLine("Try again next time.");
+        Thread.Sleep(3000);
     }
 
     // Main loop.
     public static void MainLoop()
     {
+        Boss.Health = 200;
+        Boss.row = 9;
+        Boss.col = 50;
         while (Playing)
         {
             DateTime check = DateTime.Now.AddMilliseconds(Delay);
@@ -424,13 +478,12 @@ public class GameEngine
             {
                 if (Console.KeyAvailable)
                 {
-                    keyInfo = Console.ReadKey();
+                    keyInfo = Console.ReadKey(true);
                     switch (keyInfo.Key)
                     {
                         case ConsoleKey.UpArrow:
                             if (Shoot == true)
                             {
-                                sounds.PlayShotSound();
                                 ShotRecord();
                                 Shoot = false;
                             }
@@ -466,15 +519,14 @@ public class GameEngine
             {
                 for (int i = 0; i < EnemyShipsLevelOne.Length; i++)
                 {
-                    if (EnemyShipsLevelOne[i].Health == 0)
-                    {
-                        ShipReset++;
-                    }
+                    if (EnemyShipsLevelOne[i].Health > 0)
+                        ShipReset = false;
                 }
-                if (ShipReset == EnemyShipsLevelOne.Length)
+                if (ShipReset == true)
                 {
                     Level = 2;
                     Lives++;
+                    //LineEnemyShips++;
                     EnemyHealth *= 2;
                     EnemyShotDmg *= 2;
                     EnemyParameters();
@@ -487,10 +539,10 @@ public class GameEngine
             {
                 for (int i = 0; i < EnemyShipsLevelTwo.Length; i++)
                 {
-                    if (EnemyShipsLevelTwo[i].Health == 0)
-                        ShipReset++;
+                    if (EnemyShipsLevelTwo[i].Health > 0)
+                        ShipReset = false;
                 }
-                if (ShipReset == EnemyShipsLevelTwo.Length)
+                if (ShipReset == true)
                 {
                     Level = 3;
                     Lives++;
@@ -509,10 +561,10 @@ public class GameEngine
             {
                 for (int i = 0; i < EnemyShipsLevelThree.Length; i++)
                 {
-                    if (EnemyShipsLevelThree[i].Health == 0)
-                        ShipReset++;
+                    if (EnemyShipsLevelThree[i].Health > 0)
+                        ShipReset = false;
                 }
-                if (ShipReset == EnemyShipsLevelThree.Length)
+                if (ShipReset == true)
                 {
                     Level = 4;
                     Lives++;
@@ -521,6 +573,13 @@ public class GameEngine
                     EnemyShots.Clear();
                     Transition();
                 }
+            }
+            else if (Level == 4)
+            {
+                if (Boss.Health <= 0)
+                    Playing = false;
+                BossMovement();
+                //EnemyShotRecord();
             }
             ResetField();
             Borders();
@@ -541,7 +600,7 @@ public class GameEngine
             }
             if (Lives <= 0)
                 Playing = false;
-            ShipReset = 0;
+            ShipReset = true;
             MoveLeft = MoveRight = Shoot = true;
         }
     }
@@ -709,6 +768,26 @@ public class GameEngine
         NoShipsAliveReally:
             EnemyShoting = 0;
         }
+        else if (Level == 4)
+        {
+            record.row = Boss.row;
+            record.col = Boss.col - 3;
+            EnemyShots.Add(record);
+
+            record.row = Boss.row;
+            record.col = Boss.col + 3;
+            EnemyShots.Add(record);
+
+            record.row = Boss.row;
+            record.col = Boss.col - 5;
+            EnemyShots.Add(record);
+
+            record.row = Boss.row;
+            record.col = Boss.col + 5;
+            EnemyShots.Add(record);
+
+            EnemyShoting = 0;
+        }
     }
 
     // Prints the borders.
@@ -729,39 +808,76 @@ public class GameEngine
     // Enters the enemyshots to the matrix.
     private static void EnemyShotsToField()
     {
-        for (int j = 0; j < EnemyShots.Count; j++)
+        if (Level != 4)
         {
+            for (int i = 0; i < EnemyShots.Count; i++)
+            {
 
-            record.row = EnemyShots[j].row;
-            record.col = EnemyShots[j].col;
-            Predicate<Shot> FindIndex = new Predicate<Shot>(ShotsDestroy);
-            if (field[EnemyShots[j].row, EnemyShots[j].col] == BorderChar)
-            {
-                EnemyShots.RemoveAt(j);
-                j--;
-            }
-            else if (field[EnemyShots[j].row, EnemyShots[j].col] == ShipChar)
-            {
-                EnemyShots.RemoveAt(j);
-                j--;
-                Health -= EnemyShotDmg;
-            }
-            else if (YourShots.Contains(record))
-            {
-                int Index = YourShots.FindIndex(FindIndex);
-                EnemyShots.RemoveAt(j);
-                j--;
-                YourShots.RemoveAt(Index);
-            }
-            else
-            {
-                field[EnemyShots[j].row, EnemyShots[j].col] = EnemyShotChar;
-                record.col = EnemyShots[j].col;
-                record.row = EnemyShots[j].row + 1;
-                EnemyShots.RemoveAt(j);
-                EnemyShots.Insert(j, record);
-            }
+                record.row = EnemyShots[i].row;
+                record.col = EnemyShots[i].col;
+                Predicate<Shot> FindIndex = new Predicate<Shot>(ShotsDestroy);
+                if (field[EnemyShots[i].row, EnemyShots[i].col] == BorderChar)
+                {
+                    EnemyShots.RemoveAt(i);
+                    i--;
+                }
+                else if (field[EnemyShots[i].row, EnemyShots[i].col] == ShipChar)
+                {
+                    EnemyShots.RemoveAt(i);
+                    i--;
+                    Health -= EnemyShotDmg;
+                }
+                else if (YourShots.Contains(record))
+                {
+                    int Index = YourShots.FindIndex(FindIndex);
+                    EnemyShots.RemoveAt(i);
+                    i--;
+                    YourShots.RemoveAt(Index);
+                }
+                else
+                {
+                    field[EnemyShots[i].row, EnemyShots[i].col] = EnemyShotChar;
+                    record.col = EnemyShots[i].col;
+                    record.row = EnemyShots[i].row + 1;
+                    EnemyShots.RemoveAt(i);
+                    EnemyShots.Insert(i, record);
+                }
 
+            }
+        }
+        else
+        {
+            for (int i = 0; i < EnemyShots.Count; i++)
+            {
+                record.row = EnemyShots[i].row;
+                record.col = EnemyShots[i].col;
+                Predicate<Shot> FindIndex = new Predicate<Shot>(ShotsDestroy);
+                if (field[EnemyShots[i].row, EnemyShots[i].col] == BorderChar)
+                {
+                    EnemyShots.RemoveAt(i);
+                    i--;
+                }
+                else if (field[EnemyShots[i].row, EnemyShots[i].col] == ShipChar)
+                {
+                    EnemyShots.RemoveAt(i);
+                    i--;
+                    Health -= EnemyShotDmg;
+                }
+                else if (YourShots.Contains(record))
+                {
+                    int Index = YourShots.FindIndex(FindIndex);
+                    i--;
+                    YourShots.RemoveAt(Index);
+                }
+                else
+                {
+                    field[EnemyShots[i].row, EnemyShots[i].col] = BossShotChar;
+                    record.col = EnemyShots[i].col;
+                    record.row = EnemyShots[i].row + 1;
+                    EnemyShots.RemoveAt(i);
+                    EnemyShots.Insert(i, record);
+                }
+            }
         }
     }
 
@@ -776,37 +892,53 @@ public class GameEngine
     // Enters the shots to the matrix.
     private static void YourShotsToField()
     {
-        for (int j = 0; j < YourShots.Count; j++)
+        for (int i = 0; i < YourShots.Count; i++)
         {
-            record.row = YourShots[j].row;
-            record.col = YourShots[j].col;
+            record.row = YourShots[i].row;
+            record.col = YourShots[i].col;
             Predicate<Shot> FindIndex = new Predicate<Shot>(ShotsDestroy);
-            if (field[YourShots[j].row, YourShots[j].col] == BorderChar)
+            if (field[YourShots[i].row, YourShots[i].col] == BorderChar)
             {
-                YourShots.RemoveAt(j);
-                j--;
+                YourShots.RemoveAt(i);
+                i--;
             }
-            else if (field[YourShots[j].row, YourShots[j].col] == EnemyChar)
+            else if (field[YourShots[i].row, YourShots[i].col] == BossChar)
             {
-                AcurateShots.Add(YourShots[j]);
-                YourShots.RemoveAt(j);
-                j--;
+                YourShots.RemoveAt(i);
+                i--;
+                Boss.Health -= YourShotDmg;
+                Points += 2;
+                sounds.PlayExplosionSound();
+            }
+            else if (field[YourShots[i].row, YourShots[i].col] == EnemyChar)
+            {
+                AcurateShots.Add(YourShots[i]);
+                YourShots.RemoveAt(i);
+                i--;
                 Points++;
             }
             else if (EnemyShots.Contains(record))
             {
-                int Index = EnemyShots.FindIndex(FindIndex);
-                YourShots.RemoveAt(j);
-                EnemyShots.RemoveAt(Index);
-                j--;
+                if (Level != 4)
+                {
+                    int Index = EnemyShots.FindIndex(FindIndex);
+                    YourShots.RemoveAt(i);
+                    EnemyShots.RemoveAt(Index);
+                    i--;
+                }
+                else
+                {
+                    YourShots.RemoveAt(i);
+                    i--;
+                }
             }
             else
             {
-                field[YourShots[j].row, YourShots[j].col] = YourShotChar;
-                record.col = YourShots[j].col;
-                record.row = YourShots[j].row - 1;
-                YourShots.RemoveAt(j);
-                YourShots.Insert(j, record);
+                field[YourShots[i].row, YourShots[i].col] = YourShotChar;
+                record.col = YourShots[i].col;
+                record.row = YourShots[i].row - 1;
+                YourShots.RemoveAt(i);
+                YourShots.Insert(i, record);
             }
         }
     }
@@ -855,7 +987,9 @@ public class GameEngine
         }
         Console.Clear();
         Console.Write(print);
+        if (Level != 4)
         Console.WriteLine("Points: {0}   Health: {1}   Lives {2}", Points, Health, Lives);
+        else Console.WriteLine("Points: {0}   Health: {1}   Lives {2} Boss Heath: {3}", Points, Health, Lives, Boss.Health);
     }
 
     // Records the shots. 
@@ -866,6 +1000,7 @@ public class GameEngine
             record.row = rows - 5;
             record.col = ship;
             YourShots.Add(record);
+            sounds.PlayShotSound();
         }
         else if (ShipLvl == 2)
         {
@@ -878,7 +1013,20 @@ public class GameEngine
             record.row = rows - 4;
             record.col = ship + 1;
             YourShots.Add(record);
+            sounds.PlayShotSound();
         }
+    }
+
+    private static void BossMovement()
+    {
+        if (BossDirecion == "Left" && Boss.col < cols - 7)
+            Boss.col++;
+        else
+            BossDirecion = "Right";
+        if (BossDirecion == "Right" && Boss.col > 7)
+            Boss.col--;
+        else
+            BossDirecion = "Left";
     }
 }
 

@@ -8,3 +8,9 @@ C:\Users\Dell\Desktop\Teamwork\-TeamProject-SpaceDefenders\Team Project\Menu\obj
 C:\Users\Dell\Desktop\Teamwork\-TeamProject-SpaceDefenders\Team Project\Menu\bin\Debug\Menu.exe
 C:\Users\Dell\Desktop\Teamwork\-TeamProject-SpaceDefenders\Team Project\Menu\bin\Debug\Menu.pdb
 C:\Users\Dell\Desktop\Teamwork\-TeamProject-SpaceDefenders\Team Project\Menu\obj\Debug\SpaceDefenders.csprojResolveAssemblyReference.cache
+C:\Users\ZENBOOK\Documents\Visual Studio 2013\Projects\SpaceDefenders\Team Project\Menu\bin\Debug\Menu.exe.config
+C:\Users\ZENBOOK\Documents\Visual Studio 2013\Projects\SpaceDefenders\Team Project\Menu\obj\Debug\Menu.exe
+C:\Users\ZENBOOK\Documents\Visual Studio 2013\Projects\SpaceDefenders\Team Project\Menu\obj\Debug\Menu.pdb
+C:\Users\ZENBOOK\Documents\Visual Studio 2013\Projects\SpaceDefenders\Team Project\Menu\bin\Debug\Menu.exe
+C:\Users\ZENBOOK\Documents\Visual Studio 2013\Projects\SpaceDefenders\Team Project\Menu\bin\Debug\Menu.pdb
+C:\Users\ZENBOOK\Documents\Visual Studio 2013\Projects\SpaceDefenders\Team Project\Menu\obj\Debug\SpaceDefenders.csprojResolveAssemblyReference.cache
